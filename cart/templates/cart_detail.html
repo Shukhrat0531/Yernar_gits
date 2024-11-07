@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h2>Корзина</h2>
+<ul>
+    {% for item in cart.items.all %}
+        <li>
+            {{ item.product.name }} - {{ item.quantity }} x {{ item.product.price }} = {{ item.get_total_price }}
+            <form action="{% url 'increase_quantity' item.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Увеличить</button>
+            </form>
+            <form action="{% url 'decrease_quantity' item.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Уменьшить</button>
+            </form>
+            <form action="{% url 'remove_from_cart' item.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Удалить</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+<p>Общая сумма: {{ total_price }}</p>
+
+</body>
+</html>
